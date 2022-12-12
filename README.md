@@ -11,6 +11,6 @@ Create the environment variables using the .env-example:
 
 ```
 $ .env.test
-$ .env.development
+$ .env.development.
 ```
 
