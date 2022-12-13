@@ -5,7 +5,7 @@ const {
   handle404Paths,
   handle500Errors,
 } = require("./Controllers/controllers.errors");
-app.use(express.json());
+
 
 app.get("/api/topics", getTopics);
 app.all("*", handle404Paths);
