@@ -6,3 +6,17 @@ exports.selectTopics = () => {
     return result.rows;
   });
 };
+
+exports.selectArticles = (sort_by = "created_at") => {
+ 
+
+  const SQL = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, COUNT(articles.article_id) AS comment_count 
+  FROM articles
+  JOIN comments ON comments.article_id = articles.article_id
+  GROUP BY articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes
+  ORDER BY ${sort_by} DESC`;
+
+  return db.query(SQL).then((result) => {
+    return result.rows;
+  });
+};
