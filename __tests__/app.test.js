@@ -48,7 +48,7 @@ describe("4.GET /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         const { articles } = body;
-        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(5);
         articles.forEach((article) => {
           expect(article).toEqual(
             expect.objectContaining({
