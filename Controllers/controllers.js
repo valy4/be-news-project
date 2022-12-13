@@ -1,12 +1,11 @@
-const {selectTopics} = require ('../Models/models')
-
+const { selectTopics } = require("../Models/models");
 
 exports.getTopics = (req, res, next) => {
-selectTopics ()
-.then ((topics)=>{
-    res.status(200).send(topics)
-})
-.catch((err) =>{
-    next(err)
-})
-}
+  selectTopics()
+    .then((topics) => {
+      res.status(200).send({ topics });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
