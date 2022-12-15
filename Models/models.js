@@ -30,3 +30,10 @@ exports.selectArticleById = (article_id) => {
     }
   });
 };
+exports.selectCommentsByArticle = (article_id) => {
+  const SQL = `SELECT comment_id, votes, created_at, author, body FROM comments
+  WHERE  article_id = $1`;
+  return db.query(SQL, [article_id]).then((result) => {
+    return result.rows;
+  });
+};
