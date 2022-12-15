@@ -25,7 +25,7 @@ exports.selectArticleById = (article_id) => {
 
   return db.query(SQL, [article_id]).then((result) => {
     if (result.rowCount === 0) {
-      return Promise.reject({ msg: "Page not found!", status: 404 });
+      return Promise.reject({ msg: "Article not found", status: 404 });
     } else {
       return result.rows[0];
     }
@@ -39,16 +39,4 @@ exports.selectCommentsByArticle = (article_id, sort_by = "created_at") => {
     return result.rows;
   });
 };
-exports.checkIfArticleExists = (article_id) => {
-  const SQL = `SELECT * FROM articles WHERE article_id =$1;`;
-  return db.query(SQL, [article_id]).then((result) => {
-    if (result.rowCount === 0) {
-      return Promise.reject({
-        status: 404,
-        msg: "Article not found",
-      });
-    } else {
-      return Promise.resolve(true);
-    }
-  });
-};
+

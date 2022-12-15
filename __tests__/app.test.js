@@ -116,7 +116,7 @@ describe("5.GET /api/articles/:article_id", () => {
       .get("/api/articles/1000")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toEqual("Page not found!");
+        expect(body.msg).toEqual("Article not found");
       });
   });
 });
