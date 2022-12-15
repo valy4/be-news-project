@@ -2,7 +2,8 @@ const {
   selectTopics,
   selectArticles,
   selectArticleById,
-  selectCommentsByArticle
+  selectCommentsByArticle,
+  checkIfArticleExists
 } = require("../Models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -36,9 +37,10 @@ exports.getArticleById = (req, res, next) => {
 };
 exports.getCommentsByArticle = (req, res, next) => {
   const {article_id} = req.params
-  selectCommentsByArticle(article_id)
-  .then((comment) =>{
-    res.status(200).send({comment})
+  const { sort_by } = req.query;
+  return Promise.all([checkIfArticleExists(article_id),  selectCommentsByArticle(article_id,sort_by)])
+  .then((results) =>{
+    res.status(200).send({comments:results[1]})
   }).catch((err) => {
     next(err)
   })
