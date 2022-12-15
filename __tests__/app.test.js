@@ -82,7 +82,7 @@ describe("4.GET /api/articles", () => {
       });
   });
 });
-describe.only("5.GET /api/articles/:article_id", () => {
+describe("5.GET /api/articles/:article_id", () => {
   test("responds with statusCode 200 and the response contains an article object ", () => {
     return request(app)
       .get("/api/articles/2")
