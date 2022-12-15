@@ -9,9 +9,12 @@ exports.handleCustomPaths = (err, req, res, next) => {
   }
 };
 exports.handle400Paths = (err, req, res, next) => {
-  res.status(400).send({ msg: "Bad request - invalid id" });
+  if (err.code === "22P02") {
+    res.status(400).send({ msg: "Bad request - invalid id" });
+  } else {
+    next(err);
+  }
 };
-
 exports.handle500Errors = (err, req, res, next) => {
   res.status(500).send({ msg: "Server Error" });
 };
