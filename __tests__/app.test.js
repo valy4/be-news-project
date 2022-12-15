@@ -89,9 +89,8 @@ describe("5.GET /api/articles/:article_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { article } = body;
-        expect(article).toHaveLength(1);
-        expect(article[0].article_id).toBe(2);
-        expect(article[0]).toEqual(
+        expect(article.article_id).toBe(2);
+        expect(article).toEqual(
           expect.objectContaining({
             author: expect.any(String),
             title: expect.any(String),
