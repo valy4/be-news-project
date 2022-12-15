@@ -8,8 +8,6 @@ exports.selectTopics = () => {
 };
 
 exports.selectArticles = (sort_by = "created_at") => {
- 
-
   const SQL = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, COUNT(articles.article_id) AS comment_count 
   FROM articles
   JOIN comments ON comments.article_id = articles.article_id
@@ -18,5 +16,17 @@ exports.selectArticles = (sort_by = "created_at") => {
 
   return db.query(SQL).then((result) => {
     return result.rows;
+  });
+};
+
+exports.selectArticleById = (article_id) => {
+  const SQL = "SELECT * FROM articles WHERE article_id = $1";
+
+  return db.query(SQL, [article_id]).then((result) => {
+    if (result.rowCount === 0) {
+      return Promise.reject({ msg: "Page not found!", status: 404 });
+    } else {
+      return result.rows[0];
+    }
   });
 };
