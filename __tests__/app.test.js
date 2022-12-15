@@ -120,7 +120,7 @@ describe("5.GET /api/articles/:article_id", () => {
       });
   });
 });
-describe.only("6.GET /api/articles/:article_id/comments", () => {
+describe("6.GET /api/articles/:article_id/comments", () => {
   test("responds with statusCode 200 and the response contains an array of comments", () => {
     return request(app)
       .get("/api/articles/3/comments")
