@@ -120,3 +120,33 @@ describe("5.GET /api/articles/:article_id", () => {
       });
   });
 });
+describe("6.GET /api/articles/:article_id/comments", () => {
+  test("responds with statusCode 200 and the response contains an array of comments", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toHaveLength(2);
+        comment.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("responds with statusCode 404 if the user passes an incorrect path", () => {
+    return request(app)
+      .get("/api/articles/3/comm")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Page not found!");
+      });
+  });
+});
