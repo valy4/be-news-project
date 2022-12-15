@@ -127,6 +127,7 @@ describe("6.GET /api/articles/:article_id/comments", () => {
       .expect(200)
       .then(({ body }) => {
         const { comment } = body;
+        expect(comment).toBeInstanceOf(Array);
         expect(comment).toHaveLength(2);
         comment.forEach((comment) => {
           expect(comment).toEqual(
@@ -149,4 +150,20 @@ describe("6.GET /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Page not found!");
       });
   });
+  test("responds with statusCode 400 if the user passes an incorrect id", () => {
+    return request(app)
+    .get("/api/articles/art3/comments")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Bad request - invalid id")
+    })
+  })
+  test("responds with statusCode 404 if the user passes a valid id but non existent", () => {
+    return request(app)
+    .get("/api/articles/3300/comments")
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Page not found!")
+    })
+  })
 });
