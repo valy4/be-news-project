@@ -120,16 +120,16 @@ describe("5.GET /api/articles/:article_id", () => {
       });
   });
 });
-describe("6.GET /api/articles/:article_id/comments", () => {
+describe.only("6.GET /api/articles/:article_id/comments", () => {
   test("responds with statusCode 200 and the response contains an array of comments", () => {
     return request(app)
       .get("/api/articles/3/comments")
       .expect(200)
       .then(({ body }) => {
-        const { comment } = body;
-        expect(comment).toBeInstanceOf(Array);
-        expect(comment).toHaveLength(2);
-        comment.forEach((comment) => {
+        const { comments } = body;
+        expect(comments).toHaveLength(2);
+        expect(comments).toBeSortedBy("created_at", { descending: true });
+        comments.forEach((comment) => {
           expect(comment).toEqual(
             expect.objectContaining({
               comment_id: expect.any(Number),
@@ -142,6 +142,15 @@ describe("6.GET /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("responds with statusCode 200 if the user exists but there are no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toEqual([]);
+      });
+  });
   test("responds with statusCode 404 if the user passes an incorrect path", () => {
     return request(app)
       .get("/api/articles/3/comm")
@@ -152,18 +161,18 @@ describe("6.GET /api/articles/:article_id/comments", () => {
   });
   test("responds with statusCode 400 if the user passes an incorrect id", () => {
     return request(app)
-    .get("/api/articles/art3/comments")
-    .expect(400)
-    .then(({body}) => {
-      expect(body.msg).toBe("Bad request - invalid id")
-    })
-  })
+      .get("/api/articles/art3/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request - invalid id");
+      });
+  });
   test("responds with statusCode 404 if the user passes a valid id but non existent", () => {
     return request(app)
-    .get("/api/articles/3300/comments")
-    .expect(404)
-    .then(({body}) => {
-      expect(body.msg).toBe("Page not found!")
-    })
-  })
+      .get("/api/articles/3300/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article not found");
+      });
+  });
 });
