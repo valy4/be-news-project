@@ -3,7 +3,7 @@ const {
   selectArticles,
   selectArticleById,
   selectCommentsByArticle,
-  checkIfArticleExists
+  insertComment,
 } = require("../Models/models");
 
 exports.getTopics = (req, res, next) => {
@@ -36,12 +36,27 @@ exports.getArticleById = (req, res, next) => {
     });
 };
 exports.getCommentsByArticle = (req, res, next) => {
-  const {article_id} = req.params
+  const { article_id } = req.params;
   const { sort_by } = req.query;
-  return Promise.all([selectArticleById(article_id),  selectCommentsByArticle(article_id,sort_by)])
-  .then((results) =>{
-    res.status(200).send({comments:results[1]})
-  }).catch((err) => {
-    next(err)
-  })
-}
+  return Promise.all([
+    selectArticleById(article_id),
+    selectCommentsByArticle(article_id, sort_by),
+  ])
+    .then((results) => {
+      res.status(200).send({ comments: results[1] });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+exports.postComment = (req, res, next) => {
+  const { article_id } = req.params;
+  const newComment = req.body;
+  insertComment(article_id, newComment)
+    .then((comment) => {
+      res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};

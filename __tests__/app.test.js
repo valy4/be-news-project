@@ -176,3 +176,97 @@ describe("6.GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+describe("7.POST/api/articles/:article_id/comments", () => {
+  test("responds with statusCode 201 and responds with the posted comment", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "hjhgfhjf",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toMatchObject({
+          comment_id: 19,
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: "butter_bridge",
+          body: "hjhgfhjf",
+        });
+      });
+  });
+  test("responds with statusCode 201 and ingnores if the user sends extra propeties in the body", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "A brand new comment.",
+      isBestComment: "true",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toMatchObject({
+          comment_id: 19,
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: "butter_bridge",
+          body: "A brand new comment.",
+        });
+      });
+  });
+  test("responds with statusCode 400 if the user sends no body", () => {
+    const newComment = {
+      username: "butter_bridge",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No Body");
+      });
+  });
+  test("responds with statusCode 404 if the user sends a valid username but non-existent", () => {
+    const newComment = {
+      username: "butter_br",
+      body: "hdgjhkhk",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+  test("responds with statusCode 400 if the user sends an invalid article_id", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "hdgjhkhk",
+    };
+    return request(app)
+      .post("/api/articles/bannna/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request - invalid id");
+      });
+  });
+  test("responds with statusCode 404 if the user sends a valid id but non-existent", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "hdgjhkhk",
+    };
+    return request(app)
+      .post("/api/articles/33003/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+});
