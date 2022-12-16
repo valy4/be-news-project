@@ -13,6 +13,7 @@ const {
   handleCustomPaths,
   handle500Errors,
   handleOther404Paths,
+  handleOther400Paths
 } = require("./Controllers/controllers.errors");
 app.use(express.json());
 
@@ -26,7 +27,7 @@ app.all("*", handle404Paths);
 app.use(handleCustomPaths);
 app.use(handle400Paths);
 app.use(handleOther404Paths);
-
+app.use(  handleOther400Paths)
 app.use(handle500Errors);
 
 module.exports = app;
