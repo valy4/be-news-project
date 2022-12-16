@@ -210,7 +210,7 @@ describe.only("7.POST/api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("No Body");
       });
   });
-  test("responds with statusCode 400 if the user sends non-valid username", () => {
+  test("responds with statusCode 404 if the user sends non-valid username", () => {
     const newComment = {
       username: "butter_br",
       body: "hdgjhkhk",
@@ -218,9 +218,9 @@ describe.only("7.POST/api/articles/:article_id/comments", () => {
     return request(app)
       .post("/api/articles/2/comments")
       .send(newComment)
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request");
+        expect(body.msg).toBe("Not found");
       });
   });
   test("responds with statusCode 400 if the user sends an invalid article_id", () => {
@@ -244,9 +244,9 @@ describe.only("7.POST/api/articles/:article_id/comments", () => {
     return request(app)
       .post("/api/articles/33003/comments")
       .send(newComment)
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request");
+        expect(body.msg).toBe("Not found");
       });
   });
 });

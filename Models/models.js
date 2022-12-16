@@ -40,16 +40,17 @@ exports.selectCommentsByArticle = (article_id, sort_by = "created_at") => {
   });
 };
 
-
 exports.insertComment = (article_id, newComment) => {
-  const {username, body} = newComment
-const SQL = "INSERT INTO comments  (author, body, article_id) VALUES ($1, $2, $3) RETURNING *"
+  const { username, body } = newComment;
 
-return db.query(SQL, [username, body, article_id])
-.then((result) =>{
- if(result.rows[0].body.length === 0){
-  return Promise.reject({status:400, msg:"No Body"})
- }else{return result.rows[0]}
-  
-})
-}
+  const SQL =
+    "INSERT INTO comments  (author, body, article_id) VALUES ($1, $2, $3) RETURNING *";
+
+  return db.query(SQL, [username, body, article_id]).then((result) => {
+    if (result.rows[0].body.length === 0) {
+      return Promise.reject({ status: 400, msg: "No Body" });
+    } else {
+      return result.rows[0];
+    }
+  });
+};

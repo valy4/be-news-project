@@ -12,7 +12,7 @@ const {
   handle400Paths,
   handleCustomPaths,
   handle500Errors,
-  handleOther400Paths
+  handleOther404Paths,
 } = require("./Controllers/controllers.errors");
 app.use(express.json());
 
@@ -25,7 +25,7 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticle);
 app.all("*", handle404Paths);
 app.use(handleCustomPaths);
 app.use(handle400Paths);
-app.use(handleOther400Paths);
+app.use(handleOther404Paths);
 
 app.use(handle500Errors);
 
