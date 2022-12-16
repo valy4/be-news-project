@@ -51,3 +51,14 @@ exports.insertComment = (article_id, newComment) => {
     return result.rows[0];
   });
 };
+exports.updateArticle = (article_id, newArticle) => {
+const SQL = `UPDATE articles SET votes = $2 WHERE article_id = $1  RETURNING *;`
+return db.query(SQL, [article_id, newArticle])
+.then ((result) =>{
+  if (result.rowCount === 0) {
+    return Promise.reject({ msg: "Article not found", status: 404 });
+  } else {
+    return result.rows[0];
+  }
+})
+}
