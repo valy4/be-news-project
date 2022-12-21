@@ -108,7 +108,7 @@ describe("5.GET /api/articles/:article_id", () => {
       .get("/api/articles/votes")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toEqual("Bad request - invalid id");
+        expect(body.msg).toEqual("Bad request");
       });
   });
   test("responds with a statusCode 404 if the user passes a valid but non-existent end point", () => {
@@ -164,7 +164,7 @@ describe("6.GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/art3/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request - invalid id");
+        expect(body.msg).toBe("Bad request");
       });
   });
   test("responds with statusCode 404 if the user passes a valid id but non existent", () => {
@@ -253,7 +253,7 @@ describe("7.POST/api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request - invalid id");
+        expect(body.msg).toBe("Bad request");
       });
   });
   test("responds with statusCode 404 if the user sends a valid id but non-existent", () => {
@@ -300,7 +300,7 @@ describe("8.PATCH /api/articles/:article_id" , () => {
     .send(newArticle)
     .expect(400)
     .then(({ body }) => {
-      expect(body.msg).toBe("Bad request - invalid id");
+      expect(body.msg).toBe("Bad request");
     });
   })
   test("responds with status 400 if user passes incorrect property", () => {
@@ -325,7 +325,7 @@ test("responds with statusCode 400 if the user sends an invalid article_id", () 
     .send(newArticle)
     .expect(400)
     .then(({ body }) => {
-      expect(body.msg).toBe("Bad request - invalid id");
+      expect(body.msg).toBe("Bad request");
     });
 });
 test("responds with statusCode 404 if the user sends a valid but non-existent article_id", () => {
