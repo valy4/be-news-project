@@ -10,7 +10,7 @@ exports.handleCustomPaths = (err, req, res, next) => {
 };
 exports.handle400Paths = (err, req, res, next) => {
   if (err.code === "22P02") {
-    res.status(400).send({ msg: "Bad request - invalid id" });
+    res.status(400).send({ msg: "Bad request" });
   } else {
     next(err);
   }
@@ -32,6 +32,5 @@ exports.handleOther404Paths = (err, req, res, next) => {
 };
 
 exports.handle500Errors = (err, req, res, next) => {
-  console.log(err)
   res.status(500).send({ msg: "Server Error" });
 };

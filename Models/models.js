@@ -47,7 +47,17 @@ exports.insertComment = (article_id, newComment) => {
     "INSERT INTO comments  (author, body, article_id) VALUES ($1, $2, $3) RETURNING *";
 
   return db.query(SQL, [username, body, article_id]).then((result) => {
-    console.log(result)
     return result.rows[0];
   });
 };
+exports.updateArticle = (article_id, newArticle) => {
+const SQL = `UPDATE articles SET votes = votes + $2 WHERE article_id = $1  RETURNING *;`
+return db.query(SQL, [article_id, newArticle])
+.then ((result) =>{
+  if (result.rowCount === 0) {
+    return Promise.reject({ msg: "Article not found", status: 404 });
+  } else {
+    return result.rows[0];
+  }
+})
+}

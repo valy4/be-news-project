@@ -108,7 +108,7 @@ describe("5.GET /api/articles/:article_id", () => {
       .get("/api/articles/votes")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toEqual("Bad request - invalid id");
+        expect(body.msg).toEqual("Bad request");
       });
   });
   test("responds with a statusCode 404 if the user passes a valid but non-existent end point", () => {
@@ -164,7 +164,7 @@ describe("6.GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/art3/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request - invalid id");
+        expect(body.msg).toBe("Bad request");
       });
   });
   test("responds with statusCode 404 if the user passes a valid id but non existent", () => {
@@ -253,7 +253,7 @@ describe("7.POST/api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request - invalid id");
+        expect(body.msg).toBe("Bad request");
       });
   });
   test("responds with statusCode 404 if the user sends a valid id but non-existent", () => {
@@ -269,4 +269,74 @@ describe("7.POST/api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Not found");
       });
   });
+});
+describe("8.PATCH /api/articles/:article_id" , () => {
+  test("responds with status 200 and the response object contains the updated article", () => {
+    const newArticle = {
+      inc_votes: 30
+    }
+    return request(app)
+    .patch('/api/articles/1')
+    .send(newArticle)
+    .expect(200)
+    .then(({body}) => {
+      const {article} = body
+      expect(article).toMatchObject({
+        title: expect.any(String),
+        topic: expect.any(String),
+        author: expect.any(String),
+        body: expect.any(String),
+        created_at: expect.any(String),
+        votes: 130,
+      })
+    })
+  })
+  test("responds with status 400 if user passes incorrect number", () => {
+    const newArticle = {
+      inc_votes: "number"
+    }
+    return request(app)
+    .patch('/api/articles/3')
+    .send(newArticle)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("Bad request");
+    });
+  })
+  test("responds with status 400 if user passes incorrect property", () => {
+    const newArticle = {
+      inc_vot: 30
+    }
+    return request(app)
+    .patch('/api/articles/3')
+    .send(newArticle)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("No Body");
+    });
+  })
+})
+test("responds with statusCode 400 if the user sends an invalid article_id", () => {
+  const newArticle = {
+    inc_votes: 30
+  }
+  return request(app)
+    .patch("/api/articles/bannna")
+    .send(newArticle)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("Bad request");
+    });
+});
+test("responds with statusCode 404 if the user sends a valid but non-existent article_id", () => {
+  const newArticle = {
+    inc_votes: 30
+  }
+  return request(app)
+    .patch("/api/articles/3303")
+    .send(newArticle)
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("Article not found");
+    });
 });
