@@ -51,7 +51,7 @@ exports.insertComment = (article_id, newComment) => {
   });
 };
 exports.updateArticle = (article_id, newArticle) => {
-const SQL = `UPDATE articles SET votes = $2 WHERE article_id = $1  RETURNING *;`
+const SQL = `UPDATE articles SET votes = votes + $2 WHERE article_id = $1  RETURNING *;`
 return db.query(SQL, [article_id, newArticle])
 .then ((result) =>{
   if (result.rowCount === 0) {

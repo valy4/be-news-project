@@ -276,7 +276,7 @@ describe("8.PATCH /api/articles/:article_id" , () => {
       inc_votes: 30
     }
     return request(app)
-    .patch('/api/articles/3')
+    .patch('/api/articles/1')
     .send(newArticle)
     .expect(200)
     .then(({body}) => {
@@ -287,7 +287,7 @@ describe("8.PATCH /api/articles/:article_id" , () => {
         author: expect.any(String),
         body: expect.any(String),
         created_at: expect.any(String),
-        votes: 30,
+        votes: 130,
       })
     })
   })
