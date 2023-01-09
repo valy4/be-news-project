@@ -16,7 +16,10 @@ const {
   handleOther404Paths,
   handleOther400Paths
 } = require("./Controllers/controllers.errors");
+const cors = require('cors');
+
 app.use(express.json());
+app.use(cors());
 
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
