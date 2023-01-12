@@ -6,7 +6,8 @@ const {
   getArticleById,
   postComment,
   getCommentsByArticle,
-  patchArticle
+  patchArticle,
+  getUsers
 } = require("./Controllers/controllers");
 const {
   handle404Paths,
@@ -21,12 +22,14 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.post("/api/articles/:article_id/comments", postComment);
 app.get("/api/articles/:article_id/comments", getCommentsByArticle);
 app.patch("/api/articles/:article_id", patchArticle)
+app.get("/api/users", getUsers )
 
 app.all("*", handle404Paths);
 app.use(handle400Paths);

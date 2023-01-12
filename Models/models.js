@@ -1,4 +1,3 @@
-const { response } = require("../app");
 const db = require("../db/connection");
 
 exports.selectTopics = () => {
@@ -60,4 +59,10 @@ return db.query(SQL, [article_id, newArticle])
     return result.rows[0];
   }
 })
+}
+exports.selectUsers = () => {
+  const SQL = "SELECT * FROM users";
+  return db.query(SQL).then((result) => {
+    return result.rows;
+  });
 }
